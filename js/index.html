@@ -48,6 +48,22 @@
         <button type="submit">Salvar Reserva</button>
     </form>
 
+    <!-- Seção de Configurações do Gerente -->
+    <section style="margin-top: 30px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2>Configurações do Gerente</h2>
+        <form id="formConfig">
+            <div style="margin-bottom: 15px;">
+                <label for="vagasTotais">Número Máximo de Vagas:</label><br>
+                <input type="number" id="vagasTotais" min="1" value="10" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="diariaPadrao">Valor Padrão da Diária (R$):</label><br>
+                <input type="number" id="diariaPadrao" step="0.01" min="0" value="50.00" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            </div>
+            <button type="submit" style="background-color: #2c3e50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Salvar Configurações</button>
+        </form>
+    </section>
+    
     <h2>Reservas Ativas</h2>
     
         <table>
