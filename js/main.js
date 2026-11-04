@@ -11,6 +11,10 @@ const formConfig = document.getElementById('formConfig');
 const inputVagas = document.getElementById('vagasTotais');
 const inputDiaria = document.getElementById('diariaPadrao');
 
+// Elementos da Gestão de Usuários
+const formUsuario = document.getElementById('formUsuario');
+const tabelaUsuarios = document.getElementById('tabelaUsuarios');
+
 // Função para desenhar as reservas na tabela HTML com botões de ação
 function atualizarTabela() {
     if (!tabelaReservas) return;
@@ -58,7 +62,6 @@ if (formReserva) {
         const dataFim = document.getElementById('dataFim').value;
         const valorDiaria = parseFloat(document.getElementById('valorDiaria').value);
 
-        // Validação simples de segurança para datas
         if (!dataInicio || !dataFim || dataInicio > dataFim) {
             alert('Por favor, verifique as datas de entrada e saída.');
             return;
@@ -76,7 +79,7 @@ if (formReserva) {
     });
 }
 
-// Funções globais para gerenciar as ações da tabela
+// Funções globais para gerenciar as ações da tabela de reservas
 window.mudarStatusReserva = function(id) {
     const reservas = StorageService.obterReservas();
     const reserva = reservas.find(r => r.id === id);
@@ -111,9 +114,70 @@ if (formConfig) {
     });
 }
 
-// Inicialização ao carregar a página
+// --- GESTÃO DE USUÁRIOS (Visão do Gerente) ---
+function obterUsuarios() {
+    return JSON.parse(localStorage.getItem('hotelUsuarios')) || [];
+}
+
+function salvarUsuarios(usuarios) {
+    localStorage.setItem('hotelUsuarios', JSON.stringify(usuarios));
+}
+
+function atualizarTabelaUsuarios() {
+    if (!tabelaUsuarios) return;
+    const usuarios = obterUsuarios();
+    tabelaUsuarios.innerHTML = '';
+
+    usuarios.forEach((user) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${user.nome}</td>
+            <td>${user.email}</td>
+            <td><strong>${user.funcao}</strong></td>
+            <td>
+                <button onclick="removerUsuario('${user.id}')" style="background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">Excluir</button>
+            </td>
+        `;
+        tabelaUsuarios.appendChild(tr);
+    });
+}
+
+if (formUsuario) {
+    formUsuario.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nome = document.getElementById('nomeUsuario').value;
+        const email = document.getElementById('emailUsuario').value;
+        const funcao = document.getElementById('funcaoUsuario').value;
+
+        const usuarios = obterUsuarios();
+        const novoUsuario = {
+            id: Date.now().toString(),
+            nome,
+            email,
+            funcao
+        };
+
+        usuarios.push(novoUsuario);
+        salvarUsuarios(usuarios);
+        formUsuario.reset();
+        atualizarTabelaUsuarios();
+        alert('Usuário cadastrado com sucesso!');
+    });
+}
+
+window.removerUsuario = function(id) {
+    if (confirm('Deseja realmente remover este usuário?')) {
+        let usuarios = obterUsuarios();
+        usuarios = usuarios.filter(u => u.id !== id);
+        salvarUsuarios(usuarios);
+        atualizarTabelaUsuarios();
+    }
+};
+
+// Inicialização única e unificada ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
     atualizarTabela();
+    atualizarTabelaUsuarios();
     
     // Carregar configurações salvas, se existirem
     const configSalvas = JSON.parse(localStorage.getItem('hotelConfig'));
@@ -122,4 +186,3 @@ document.addEventListener('DOMContentLoaded', () => {
         inputDiaria.value = configSalvas.diariaPadrao || 50.00;
     }
 });
-

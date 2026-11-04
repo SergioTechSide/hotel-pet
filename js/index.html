@@ -63,6 +63,45 @@
             <button type="submit" style="background-color: #2c3e50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Salvar Configurações</button>
         </form>
     </section>
+
+    <!-- Seção de Gestão de Usuários (Visão do Gerente) -->
+    <section style="margin-top: 30px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2>Gestão de Usuários e Permissões</h2>
+        <form id="formUsuario">
+            <div style="margin-bottom: 12px;">
+                <label for="nomeUsuario">Nome do Usuário:</label>
+                <input type="text" id="nomeUsuario" required>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <label for="emailUsuario">E-mail:</label>
+                <input type="email" id="emailUsuario" required>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <label for="funcaoUsuario">Função / Perfil:</label>
+                <select id="funcaoUsuario">
+                    <option value="Cliente">Cliente</option>
+                    <option value="Funcionário">Funcionário</option>
+                    <option value="Gerente">Gerente</option>
+                </select>
+            </div>
+            <button type="submit" style="background-color: #2c3e50; color: white;">Cadastrar / Alterar Usuário</button>
+        </form>
+
+        <h3 style="margin-top: 20px;">Usuários Cadastrados</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Função</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaUsuarios">
+                <!-- Os usuários cadastrados aparecerão aqui via JavaScript -->
+            </tbody>
+        </table>
+    </section>
     
     <h2>Reservas Ativas</h2>
     
