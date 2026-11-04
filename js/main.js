@@ -7,12 +7,12 @@ const formReserva = document.getElementById('formReserva');
 const tabelaReservas = document.getElementById('tabelaReservas');
 
 // Função para desenhar as reservas na tabela HTML
+// Função para desenhar as reservas na tabela HTML com botões de ação
 function atualizarTabela() {
     const reservas = StorageService.obterReservas();
     tabelaReservas.innerHTML = '';
 
-    reservas.forEach(reservaObj => {
-        // Recriamos o objeto usando a classe para aproveitar os métodos (como o cálculo)
+    reservas.forEach((reservaObj, index) => {
         const reserva = new Reserva(
             reservaObj.id,
             reservaObj.clienteNome,
@@ -21,7 +21,7 @@ function atualizarTabela() {
             reservaObj.dataFim,
             reservaObj.valorDiaria
         );
-        reserva.status = reservaObj.status;
+        reserva.status = reservaObj.status || 'ativa';
 
         const valorTotal = reserva.calcularTotalDias();
 
@@ -32,11 +32,35 @@ function atualizarTabela() {
             <td>${reserva.dataInicio}</td>
             <td>${reserva.dataFim}</td>
             <td>R$ ${valorTotal.toFixed(2)}</td>
-            <td>${reserva.status}</td>
+            <td><strong>${reserva.status}</strong></td>
+            <td>
+                <button onclick="mudarStatusReserva('${reserva.id}')" style="background-color: #f39c12; padding: 5px 10px; font-size: 12px; margin-right: 5px;">Mudar Status</button>
+                <button onclick="excluirReserva('${reserva.id}')" style="background-color: #e74c3c; padding: 5px 10px; font-size: 12px;">Excluir</button>
+            </td>
         `;
         tabelaReservas.appendChild(tr);
     });
 }
+ 
+// Funções globais para gerenciar as ações da tabela
+window.mudarStatusReserva = function(id) {
+    const reservas = StorageService.obterReservas();
+    const reserva = reservas.find(r => r.id === id);
+    if (reserva) {
+        reserva.status = reserva.status === 'ativa' ? 'finalizada' : 'ativa';
+        StorageService.salvarReservas(reservas);
+        atualizarTabela();
+    }
+};
+
+window.excluirReserva = function(id) {
+    if (confirm('Tem certeza que deseja excluir esta reserva?')) {
+        let reservas = StorageService.obterReservas();
+        reservas = reservas.filter(r => r.id !== id);
+        StorageService.salvarReservas(reservas);
+        atualizarTabela();
+    }
+};
 
 // Escutando o evento de envio do formulário
 formReserva.addEventListener('submit', (evento) => {

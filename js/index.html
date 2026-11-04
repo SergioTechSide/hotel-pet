@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Pet - Painel de Controle</title>
+
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f8; color: #333; }
         h1, h2 { color: #2c3e50; }
@@ -48,22 +49,24 @@
     </form>
 
     <h2>Reservas Ativas</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Tutor(a)</th>
-                <th>Pet</th>
-                <th>Entrada</th>
-                <th>Saída</th>
-                <th>Total (R$)</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody id="tabelaReservas">
-            <!-- As reservas cadastradas aparecerão aqui via JavaScript -->
-        </tbody>
-    </table>
-
+    
+        <table>
+    <thead>
+        <tr>
+            <th>Tutor(a)</th>
+            <th>Pet</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Total (R$)</th>
+            <th>Status</th>
+            <th>Ações</th> <!-- Aqui entra a nova coluna! -->
+        </tr>
+    </thead>
+    <tbody id="tabelaReservas">
+        <!-- As reservas cadastradas aparecerão aqui via JavaScript -->
+    </tbody>
+</table>
+    
     <!-- Importando nosso script principal como módulo ES6 -->
 <script type="module" src="./main.js"></script></body>
 </html>
